@@ -57,11 +57,6 @@
 			<artifactId>ccp-commons</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
-		<dependency>
-			<groupId>com.ccp</groupId>
-			<artifactId>ccp-fields-validations-aspectj</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
 		<!--
 		https://mvnrepository.com/artifact/jakarta.servlet/jakarta.servlet-api -->
 		<dependency>
