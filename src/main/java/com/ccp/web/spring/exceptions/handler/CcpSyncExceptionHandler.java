@@ -24,7 +24,7 @@ public class CcpSyncExceptionHandler {
 	@ResponseStatus(code = HttpStatus.UNPROCESSABLE_ENTITY)
 	@ExceptionHandler({ CcpJsonInvalid.class })
 	public Map<String, Object> handle(CcpJsonInvalid e) {
-		return e.errors.content;
+		return e.result.content;
 	}
 
 	@ResponseBody
