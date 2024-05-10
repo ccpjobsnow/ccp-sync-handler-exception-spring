@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.ccp.constantes.CcpConstants;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.exceptions.process.CcpFlow;
-import com.ccp.validation.CcpJsonFieldsValidations.CcpJsonInvalid;
+import com.ccp.validation.CcpJsonInvalid;
 
 import jakarta.servlet.http.HttpServletResponse;
 
