@@ -35,7 +35,7 @@ public class CcpSyncExceptionHandler {
 		
 		String message = e.getMessage();
 		
-		CcpJsonRepresentation result = CcpConstants.EMPTY_JSON.put("message", message);
+		CcpJsonRepresentation result = CcpConstants.EMPTY_JSON.put("msg", message);
 		
 		if(e.fields.length <= 0) {
 			return result.content;
@@ -50,10 +50,16 @@ public class CcpSyncExceptionHandler {
 
 	@ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)
 	@ExceptionHandler({ Throwable.class })
-	public Map<String, Object> handle(Throwable e) {
+	public void handle(Throwable e) {
 		if(genericExceptionHandler == null) {
 			throw new RuntimeException("genericExceptionHandler must has an instance ", e);
 		}
-		return genericExceptionHandler.apply(e).content;
+		genericExceptionHandler.apply(e);
+	}
+	
+//	@ResponseStatus(code = HttpStatus.METHOD_NOT_ALLOWED)
+//	@ExceptionHandler({ org.springframework.web.HttpRequestMethodNotSupportedException.class })
+	public void methodNoSupported() {
+		
 	}
 }
