@@ -41,7 +41,7 @@ public class CcpSyncExceptionHandler {
 			return result.content;
 		}
 		
-		CcpJsonRepresentation subMap = e.values.getJsonPiece(e.fields);
+		CcpJsonRepresentation subMap = e.json.getJsonPiece(e.fields);
 		
 		CcpJsonRepresentation putAll = result.putAll(subMap);
 		
