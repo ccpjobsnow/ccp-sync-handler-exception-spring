@@ -17,7 +17,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public class CcpPutSessionValuesAndExecuteTaskFilter implements Filter{
 	
-	public static final CcpPutSessionValuesAndExecuteTaskFilter TASKLESS = new  CcpPutSessionValuesAndExecuteTaskFilter(CcpConstants.DO_BY_PASS);
+	public static final CcpPutSessionValuesAndExecuteTaskFilter TASKLESS = new  CcpPutSessionValuesAndExecuteTaskFilter(CcpConstants.DO_NOTHING);
 	
 	private final Function<CcpJsonRepresentation, CcpJsonRepresentation> task;
 	
