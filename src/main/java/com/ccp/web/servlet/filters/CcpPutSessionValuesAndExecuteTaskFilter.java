@@ -25,7 +25,6 @@ public class CcpPutSessionValuesAndExecuteTaskFilter implements Filter{
 		this.task = task;
 	}
 
-
 	public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain){
 
 		HttpServletRequest request = (HttpServletRequest) req;
@@ -53,17 +52,13 @@ public class CcpPutSessionValuesAndExecuteTaskFilter implements Filter{
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		} 
-
 	}
 
-	
 	public void init(FilterConfig filterConfig) throws ServletException {
 		
 	}
-
 	
 	public void destroy() {
 		
 	}
-
 }
