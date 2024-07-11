@@ -31,11 +31,12 @@ public class CcpSyncExceptionHandler {
 	@ExceptionHandler({ CcpFlow.class })
 	public Map<String, Object> handle(CcpFlow e, HttpServletResponse res){
 		
-		res.setStatus(e.status);
+		res.setStatus(e.status.status());
 		
 		String message = e.getMessage();
 		
-		CcpJsonRepresentation result = CcpConstants.EMPTY_JSON.put("msg", message);
+		CcpJsonRepresentation result = 
+				CcpConstants.EMPTY_JSON.put("msg", message);
 		
 		if(e.fields.length <= 0) {
 			return result.content;
