@@ -8,7 +8,6 @@ import com.ccp.constantes.CcpConstants;
 import com.ccp.decorators.CcpEmailDecorator;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.decorators.CcpStringDecorator;
-import com.ccp.json.transformers.CcpJsonTransformerGenerateFieldHash;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.servlet.ServletInputStream;
@@ -36,17 +35,15 @@ public class CcpPutSessionValuesRequestWrapper extends HttpServletRequestWrapper
 			ServletInputStream inputStream = request.getInputStream();
 			Map<String, Object> originalJson = mapper.readValue(inputStream, Map.class);
 			CcpJsonRepresentation sessionValues = this.getSessionValues(originalJson);
-			var fieldHashGenerator = new CcpJsonTransformerGenerateFieldHash("email", "originalEmail");
-			CcpJsonRepresentation transformedJson = sessionValues.getTransformedJson(fieldHashGenerator, this.task);
+			CcpJsonRepresentation transformedJson = sessionValues.putEmailHash("SHA1").getTransformedJson(this.task);
 			CcpJsonServletInputStream is = new CcpJsonServletInputStream(transformedJson);
 			return is;
 		} catch (IOException e) {
 			StringBuffer requestURL = this.request.getRequestURL();
 			CcpEmailDecorator email = new CcpStringDecorator(requestURL.toString()).email().findFirst("/");
 			CcpJsonRepresentation sessionValues = this.getSessionValues(CcpConstants.EMPTY_JSON.content);
-			var fieldHashGenerator = new CcpJsonTransformerGenerateFieldHash("email", "originalEmail");
 			CcpJsonRepresentation put = sessionValues.put("email", email);
-			CcpJsonRepresentation apply = fieldHashGenerator.apply(put);
+			CcpJsonRepresentation apply = put.putEmailHash("SHA1");
 			CcpJsonServletInputStream is = new CcpJsonServletInputStream(apply);
 			return is;
 		}
