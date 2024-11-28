@@ -19,7 +19,7 @@ import jakarta.servlet.http.HttpServletResponse;
 @RestControllerAdvice
 public class CcpSyncExceptionHandler {
 
-	public static Function<Throwable, CcpJsonRepresentation> genericExceptionHandler;
+	public static Function<CcpJsonRepresentation, CcpJsonRepresentation> genericExceptionHandler;
  
 	@ResponseStatus(code = HttpStatus.UNPROCESSABLE_ENTITY)
 	@ExceptionHandler({ CcpJsonInvalid.class })
@@ -55,7 +55,8 @@ public class CcpSyncExceptionHandler {
 		if(genericExceptionHandler == null) {
 			throw new RuntimeException("genericExceptionHandler must has an instance ", e);
 		}
-		genericExceptionHandler.apply(e);
+		CcpJsonRepresentation json = new CcpJsonRepresentation(e);
+		genericExceptionHandler.apply(json);
 	}
 	
 //	@ResponseStatus(code = HttpStatus.METHOD_NOT_ALLOWED)
