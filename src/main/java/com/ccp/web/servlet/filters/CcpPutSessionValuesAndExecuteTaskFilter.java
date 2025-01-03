@@ -2,7 +2,7 @@ package com.ccp.web.servlet.filters;
 
 import java.util.function.Function;
 
-import com.ccp.constantes.CcpConstants;
+import com.ccp.constantes.CcpOtherConstants;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.web.servlet.request.CcpPutSessionValuesRequestWrapper;
 
@@ -17,7 +17,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public class CcpPutSessionValuesAndExecuteTaskFilter implements Filter{
 	
-	public static final CcpPutSessionValuesAndExecuteTaskFilter TASKLESS = new  CcpPutSessionValuesAndExecuteTaskFilter(CcpConstants.DO_NOTHING);
+	public static final CcpPutSessionValuesAndExecuteTaskFilter TASKLESS = new  CcpPutSessionValuesAndExecuteTaskFilter(CcpOtherConstants.DO_NOTHING);
 	
 	private final Function<CcpJsonRepresentation, CcpJsonRepresentation> task;
 	
@@ -53,6 +53,7 @@ public class CcpPutSessionValuesAndExecuteTaskFilter implements Filter{
 			throw new RuntimeException(e);
 		} 
 	}
+
 
 	public void init(FilterConfig filterConfig) throws ServletException {
 		

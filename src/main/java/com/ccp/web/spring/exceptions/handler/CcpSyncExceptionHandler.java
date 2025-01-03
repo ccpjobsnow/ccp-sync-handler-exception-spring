@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.ccp.constantes.CcpConstants;
+import com.ccp.constantes.CcpOtherConstants;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.exceptions.process.CcpFlow;
 import com.ccp.validation.CcpJsonInvalid;
@@ -31,11 +31,11 @@ public class CcpSyncExceptionHandler {
 	@ExceptionHandler({ CcpFlow.class })
 	public Map<String, Object> handle(CcpFlow e, HttpServletResponse res){
 		
-		res.setStatus(e.status.status());
+		res.setStatus(e.status.asNumber());
 		
 		String message = e.getMessage();
 		
-		CcpJsonRepresentation result = CcpConstants.EMPTY_JSON.put("msg", message);
+		CcpJsonRepresentation result = CcpOtherConstants.EMPTY_JSON.put("msg", message);
 		
 		if(e.fields.length <= 0) {
 			return result.content;

@@ -1,6 +1,9 @@
 package com.ccp.web.servlet.filters;
 
+import java.util.Arrays;
+
 import com.ccp.decorators.CcpStringDecorator;
+import com.ccp.process.CcpDefaultProcessStatus;
 
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
@@ -13,10 +16,17 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public class CcpValidEmailFilter implements Filter{
 	
-	private CcpValidEmailFilter() {}
+	private final String[] filtered;
 	
-	public static final CcpValidEmailFilter INSTANCE = new CcpValidEmailFilter();
-	
+	public CcpValidEmailFilter(String... filtered) {
+		this.filtered = filtered;
+	}
+
+	public static CcpValidEmailFilter getEmailSyntaxFilter(String... filtered) {
+		CcpValidEmailFilter ccpValidEmailFilter = new CcpValidEmailFilter(filtered);
+		return ccpValidEmailFilter;
+	}
+
 	public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain){
 
 		HttpServletRequest request = (HttpServletRequest) req;
@@ -40,14 +50,10 @@ public class CcpValidEmailFilter implements Filter{
 
 		StringBuffer requestURL = request.getRequestURL();
 		String url = new CcpStringDecorator(requestURL.toString()).url().asDecoded();
-		String filtered = "login/";
-		int indexOf = url.indexOf(filtered) + filtered.length();
-		String urlSecondPiece = url.substring(indexOf);
-		String[] split = urlSecondPiece.split("/");
-		String email = split[0];
+		String email = this.extractEmail(url);
 		boolean invalidEmail = new CcpStringDecorator(email).email().isValid() == false;
 		if(invalidEmail) {
-			response.setStatus(400);
+			response.setStatus(CcpDefaultProcessStatus.BAD_REQUEST.asNumber());
 			return;
 		}
 		try {
@@ -55,9 +61,24 @@ public class CcpValidEmailFilter implements Filter{
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		} 
-
 	}
 
+	private String extractEmail(String url) {
+		
+		for (String string : this.filtered) {
+			int indexOf = url.indexOf(string);
+			if(indexOf < 0) {
+				continue;
+			}
+			int sum = url.indexOf(string) + string.length();
+			String urlSecondPiece = url.substring(sum);
+			String[] split = urlSecondPiece.split("/");
+			String email = split[0];
+			return email;
+		}
+		
+		throw new RuntimeException("The url '"  + url + "' is not composed by none of these values: " + Arrays.asList(this.filtered));
+	}
 	
 	public void init(FilterConfig filterConfig) throws ServletException {
 		
@@ -66,6 +87,10 @@ public class CcpValidEmailFilter implements Filter{
 	
 	public void destroy() {
 		
+	}
+
+	public String toString() {
+		return "CcpValidEmailFilter [filtered=" + filtered + "]";
 	}
 
 }
