@@ -35,7 +35,7 @@ public class CcpSyncExceptionHandler {
 		
 		String message = e.getMessage();
 		
-		CcpJsonRepresentation result = CcpOtherConstants.EMPTY_JSON.put("msg", message);
+		CcpJsonRepresentation result = CcpOtherConstants.EMPTY_JSON.put("message", message);
 		
 		if(e.fields.length <= 0) {
 			return result.content;
