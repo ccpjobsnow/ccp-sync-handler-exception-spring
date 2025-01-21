@@ -37,7 +37,9 @@ public class CcpSyncExceptionHandler {
 		
 		CcpJsonRepresentation result = CcpOtherConstants.EMPTY_JSON.put("message", message);
 		
-		if(e.fields.length <= 0) {
+		boolean noFields = e.fields.length <= 0;
+		
+		if(noFields) {
 			return result.content;
 		}
 		
