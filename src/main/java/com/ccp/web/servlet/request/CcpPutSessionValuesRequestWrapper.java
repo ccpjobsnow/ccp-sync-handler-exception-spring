@@ -36,7 +36,7 @@ public class CcpPutSessionValuesRequestWrapper extends HttpServletRequestWrapper
 			ServletInputStream inputStream = request.getInputStream();
 			Map<String, Object> originalJson = mapper.readValue(inputStream, Map.class);
 			CcpJsonRepresentation sessionValues = this.getSessionValues(originalJson);
-			CcpJsonRepresentation transformedJson = sessionValues.getTransformedJson(this.task);
+			CcpJsonRepresentation transformedJson = sessionValues.extractInformationFromJson(this.task);
 			CcpJsonServletInputStream is = new CcpJsonServletInputStream(transformedJson);
 			return is;
 		} catch (IOException e) {
