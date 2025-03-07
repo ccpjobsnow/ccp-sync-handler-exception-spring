@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.ccp.constantes.CcpOtherConstants;
 import com.ccp.decorators.CcpJsonRepresentation;
-import com.ccp.exceptions.process.CcpFlowDiversion;
+import com.ccp.exceptions.process.CcpFlowDisturb;
 import com.ccp.validation.CcpJsonInvalid;
 
 import jakarta.servlet.http.HttpServletResponse;
@@ -28,8 +28,8 @@ public class CcpSyncExceptionHandler {
 	}
 
 	@ResponseBody
-	@ExceptionHandler({ CcpFlowDiversion.class })
-	public Map<String, Object> handle(CcpFlowDiversion e, HttpServletResponse res){
+	@ExceptionHandler({ CcpFlowDisturb.class })
+	public Map<String, Object> handle(CcpFlowDisturb e, HttpServletResponse res){
 		
 		res.setStatus(e.status.asNumber());
 		
