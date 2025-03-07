@@ -9,14 +9,13 @@ import com.ccp.constantes.CcpStringConstants;
 import com.ccp.decorators.CcpEmailDecorator;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.decorators.CcpStringDecorator;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.servlet.ServletInputStream;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletRequestWrapper;
 
-public class CcpPutSessionValuesRequestWrapper extends HttpServletRequestWrapper {
+public class CcpPutSessionValuesRequestWrapper extends HttpServletRequestWrapper implements CcpJsonExtractorFromHttpServletRequest{
 	
 	private final Function<CcpJsonRepresentation, CcpJsonRepresentation> task;
 	
@@ -28,13 +27,10 @@ public class CcpPutSessionValuesRequestWrapper extends HttpServletRequestWrapper
 		this.task = task;
 	}
 
-	@SuppressWarnings("unchecked")
 	public ServletInputStream getInputStream() throws IOException {
-		ObjectMapper mapper = new ObjectMapper();
 		try {
 			ServletRequest request = super.getRequest();
-			ServletInputStream inputStream = request.getInputStream();
-			Map<String, Object> originalJson = mapper.readValue(inputStream, Map.class);
+			Map<String, Object> originalJson = this.extractJsonFromHttpServletRequest(request);
 			CcpJsonRepresentation sessionValues = this.getSessionValues(originalJson);
 			CcpJsonRepresentation transformedJson = sessionValues.getTransformedJson(this.task);
 			CcpJsonServletInputStream is = new CcpJsonServletInputStream(transformedJson);
@@ -48,6 +44,7 @@ public class CcpPutSessionValuesRequestWrapper extends HttpServletRequestWrapper
 			return is;
 		}
 	}
+
 
 	protected CcpJsonRepresentation getSessionValues() {
 		CcpJsonRepresentation sessionValues = this.getSessionValues(CcpOtherConstants.EMPTY_JSON.content);
