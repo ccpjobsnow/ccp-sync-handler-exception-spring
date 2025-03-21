@@ -55,9 +55,10 @@ public class CcpValidJsonFilter implements Filter, CcpJsonExtractorFromHttpServl
 
 		try {
 			Map<String, Object> json = this.extractJsonFromHttpServletRequest(request);
-			CcpJsonFieldsValidations.validate(validationClass, json, request.getRequestURL().toString());
+			CcpJsonFieldsValidations.validate(this.validationClass, json, request.getRequestURL().toString());
+			chain.doFilter(request, response);
 		} catch (CcpJsonInvalid e) {
-			// TODO: handle exception
+			response.setStatus(422);
 		}
 	}
 
