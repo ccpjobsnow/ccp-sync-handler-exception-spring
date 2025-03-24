@@ -1,9 +1,8 @@
 package com.ccp.web.servlet.filters;
 
-import java.util.Arrays;
-
 import com.ccp.decorators.CcpStringDecorator;
 import com.ccp.process.CcpDefaultProcessStatus;
+import com.ccp.web.servlet.exceptions.CcpInvalidUrlToFilter;
 
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
@@ -77,7 +76,7 @@ public class CcpValidEmailFilter implements Filter{
 			return email;
 		}
 		
-		throw new RuntimeException("The url '"  + url + "' is not composed by none of these values: " + Arrays.asList(this.filtered));
+		throw new CcpInvalidUrlToFilter(url, this.filtered);
 	}
 	
 	public void init(FilterConfig filterConfig) throws ServletException {

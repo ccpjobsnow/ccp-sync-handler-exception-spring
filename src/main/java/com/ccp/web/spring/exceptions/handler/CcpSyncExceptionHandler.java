@@ -13,6 +13,7 @@ import com.ccp.constantes.CcpOtherConstants;
 import com.ccp.decorators.CcpJsonRepresentation;
 import com.ccp.exceptions.process.CcpFlowDisturb;
 import com.ccp.validation.CcpJsonInvalid;
+import com.ccp.web.servlet.exceptions.GenericExceptionHandlerMissing;
 
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -54,7 +55,7 @@ public class CcpSyncExceptionHandler {
 	@ExceptionHandler({ Throwable.class })
 	public void handle(Throwable e) {
 		if(genericExceptionHandler == null) {
-			throw new RuntimeException("genericExceptionHandler must has an instance ", e);
+			throw new GenericExceptionHandlerMissing(e);
 		}
 		CcpJsonRepresentation json = new CcpJsonRepresentation(e);
 		genericExceptionHandler.apply(json);
